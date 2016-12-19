@@ -19,32 +19,18 @@ RUN wget http://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz && \
 ENV PATH="/usr/local/texlive/2016/bin/x86_64-linux:${PATH}"
 ENV TEXMFLOCAL="/usr/local/texlive/texmf-local"
 
-RUN tlmgr install arev bera colortbl etoolbox fancyhdr pgf sectsty textpos titlesec titling ulem
+COPY install-font-arial.sh /install-font-arial.sh
+COPY install-font-trebuchet.sh /install-font-trebuchet.sh
 
 # source: http://www.verbeia.com/tex/
-RUN wget -N http://www.verbeia.com/tex/fontsupport/arial.zip && \
-    unzip arial.zip && \
-    rm -r __MAC* && \
-    mkdir -p ${TEXMFLOCAL}/fonts/truetype/arial && \
-    cp /usr/share/fonts/truetype/msttcorefonts/Arial.ttf ${TEXMFLOCAL}/fonts/truetype/arial/marr16.ttf && \
-    cp /usr/share/fonts/truetype/msttcorefonts/Arial_Bold.ttf ${TEXMFLOCAL}/fonts/truetype/arial/marb16.ttf && \
-    cp /usr/share/fonts/truetype/msttcorefonts/Arial_Italic.ttf ${TEXMFLOCAL}/fonts/truetype/arial/marri16.ttf && \
-    cp /usr/share/fonts/truetype/msttcorefonts/Arial_Bold_Italic.ttf ${TEXMFLOCAL}/fonts/truetype/arial/marbi16.ttf && \
-    mkdir -p ${TEXMFLOCAL}/tex/latex/arialmt && \
-    cp -rf arial/tex/* ${TEXMFLOCAL}/tex/latex/arialmt && \
-    mkdir -p ${TEXMFLOCAL}/fonts/tfm && \
-    cp -rf arial/tfm/* ${TEXMFLOCAL}/fonts/tfm && \
-    mkdir -p ${TEXMFLOCAL}/fonts/vf && \
-    cp -rf arial/vf/* ${TEXMFLOCAL}/fonts/vf && \
-    mkdir -p ${TEXMFLOCAL}/fonts/enc && \
-    cp -rf arial/*.enc ${TEXMFLOCAL}/fonts/enc && \
-    mkdir -p ${TEXMFLOCAL}/fonts/map/pdftex && \
-    cp -rf arial/arial.map ${TEXMFLOCAL}/fonts/map/pdftex && \
-    rm -rf arial/ && \
-    rm arial.zip && \
+RUN ./install-font-arial.sh && \
+    ./install-font-trebuchet.sh && \
+    rm /install-font-arial.sh && \
+    rm /install-font-trebuchet.sh && \
     mktexlsr && \
-    updmap-sys -enable Map=arial.map
+    updmap-sys -enable Map=arial.map && \
+    updmap-sys -enable Map=trebuchet.map
 
-WORKDIR /data
+WORKDIR /texlive
 
-VOLUME ["/data"]
+VOLUME ["/texlive"]
