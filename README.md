@@ -15,6 +15,11 @@ or
 
     \usepackage{arialmt}
 
+#### Arial Black
+
+    \usepackage{arialblk}
+    {\fontfamily{arialblk}\selectfont Arial Black}
+
 #### Trebuchet
 
     \usepackage{trebuchet}

@@ -20,15 +20,19 @@ ENV PATH="/usr/local/texlive/2016/bin/x86_64-linux:${PATH}"
 ENV TEXMFLOCAL="/usr/local/texlive/texmf-local"
 
 COPY install-font-arial.sh /install-font-arial.sh
+COPY install-font-arial-black.sh /install-font-arial-black.sh
 COPY install-font-trebuchet.sh /install-font-trebuchet.sh
 
 # source: http://www.verbeia.com/tex/
 RUN ./install-font-arial.sh && \
+    ./install-font-arial-black.sh && \
     ./install-font-trebuchet.sh && \
     rm /install-font-arial.sh && \
     rm /install-font-trebuchet.sh && \
+    rm /install-font-arial-black.sh && \
     mktexlsr && \
     updmap-sys -enable Map=arial.map && \
+    updmap-sys -enable Map=arialblk.map && \
     updmap-sys -enable Map=trebuchet.map
 
 WORKDIR /texlive
